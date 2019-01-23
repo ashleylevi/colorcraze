@@ -1,5 +1,6 @@
 const generateBtn = document.querySelector('.generate-btn');
-const lockBtn = document.querySelector('.fa-unlock-alt');
+const lockBtns = document.querySelectorAll('.fa-unlock-alt');
+const unlockBtns = document.querySelectorAll('.fa-lock');
 const saveBtn = document.querySelector('.save-btn');
 const deleteBtn = document.querySelector('.delete-btn');
 const colorOne = document.querySelector('.color1');
@@ -12,9 +13,6 @@ const hexTwo = document.querySelector('.hex2');
 const hexThree = document.querySelector('.hex3');
 const hexFour = document.querySelector('.hex4');
 const hexFive = document.querySelector('.hex5');
-
-
-
 
 generateHex = () => {
   let color = '#';
@@ -37,16 +35,35 @@ generateColors = () => {
 
 displayColors = () => {
   let colors = generateColors()
-  colorOne.setAttribute('style', `background-color: ${colors[0]}`)
-  hexOne.innerText = colors[0]
-  colorTwo.setAttribute('style', `background-color: ${colors[1]}`)
-  hexTwo.innerText = colors[1]
-  colorThree.setAttribute('style', `background-color: ${colors[2]}`)
-  hexThree.innerText = colors[2]
-  colorFour.setAttribute('style', `background-color: ${colors[3]}`)
-  hexFour.innerText = colors[3]
-  colorFive.setAttribute('style', `background-color: ${colors[4]}`) 
-  hexFive.innerText = colors[4]
+  if (!colorOne.classList.contains('locked')) {
+    colorOne.setAttribute('style', `background-color: ${colors[0]}`)
+    hexOne.innerText = colors[0]
+  }
+  if (!colorTwo.classList.contains('locked')) {
+    colorTwo.setAttribute('style', `background-color: ${colors[1]}`)
+    hexTwo.innerText = colors[1]
+  }
+  if (!colorThree.classList.contains('locked')) {
+    colorThree.setAttribute('style', `background-color: ${colors[2]}`)
+    hexThree.innerText = colors[2]
+  }
+  if (!colorFour.classList.contains('locked')) {
+    colorFour.setAttribute('style', `background-color: ${colors[3]}`)
+    hexFour.innerText = colors[3]
+  }
+  if (!colorOne.classList.contains('locked')) {
+    colorFive.setAttribute('style', `background-color: ${colors[4]}`) 
+    hexFive.innerText = colors[4]
+  }
+}
+
+toggleLock = (e) => {
+    e.target.classList.toggle('fa-unlock-alt')
+    e.target.classList.toggle('fa-lock')
+    e.target.parentElement.classList.toggle('locked')
 }
 
 generateBtn.addEventListener('click', displayColors)
+lockBtns.forEach((button) => {
+  button.addEventListener('click', toggleLock)
+})
