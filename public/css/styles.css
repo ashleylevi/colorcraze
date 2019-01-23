@@ -138,14 +138,14 @@ input[type=text] {
 }
 
 .project-display {
-  margin: 0 50px 0 50px;
+  margin: 50px 0 50px 0;
 }
 
 .project-name-header {
   background-color: #111111;
-  width: 1100px;
+  width: 900px;
   height: 60px;
-  margin: 50px 20px 0 20px;
+  margin: 0 auto;
 }
 
 .project-name {
@@ -158,10 +158,8 @@ input[type=text] {
 
 .saved-colors-display {
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  justify-content: center;
   height: 155px;
-  margin: 0 20px 0 20px;
 }
 
 .saved-color {
@@ -171,7 +169,7 @@ input[type=text] {
 }
 
 .color-and-delete-container {
-  display: flex;
+  margin: 0 auto;
 }
 
 .delete-display {
