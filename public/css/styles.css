@@ -15,7 +15,6 @@ body {
   margin-left: 10px;
   font-size: 27px;
   line-height: 3.2em;
-
 }
 
 .app-icon {
@@ -33,6 +32,7 @@ body {
   cursor: pointer;
   font-size: 18px;
   margin: 30px 50px 0 0;
+  transition: .2s;
 }
 
 .generate-btn:hover {
@@ -71,6 +71,7 @@ body {
 .fa-unlock-alt {
   color: #c3c3c3;
   font-size: 25px;
+  transition: .2s;
 }
 
 .fa-unlock-alt:hover {
@@ -124,6 +125,7 @@ input[type=text] {
   padding: 5px 15px 8px 15px;
   cursor: pointer;
   font-size: 18px;
+  transition: .2s;
 }
 
 .save-btn:hover {
@@ -194,6 +196,7 @@ input[type=text] {
   color: #c3c3c3;
   font-size: 25px;
   margin-bottom: 20px;
+  transition: .2s;
 }
 
 .fa-trash-alt:hover {
