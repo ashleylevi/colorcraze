@@ -78,6 +78,17 @@ body {
   color: #fff;
 }
 
+.fa-lock {
+  color: #c3c3c3;
+  font-size: 25px;
+  transition: .2s;
+}
+
+.fa-lock:hover {
+  cursor: pointer;
+  color: #fff;
+}
+
 .hex {
   color: #c3c3c3;
   font-size: 18px;
