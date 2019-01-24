@@ -1,6 +1,6 @@
-// const environment = process.env.NODE_ENV || "development"
-// const configuration = require('./knexfile')[environment]
-// const database = require('knex')(configuration)
+const environment = process.env.NODE_ENV || "development"
+const configuration = require('./knexfile')[environment]
+const database = require('knex')(configuration)
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
@@ -41,16 +41,16 @@ app.locals.palettes = [
     id: 2,
     project_id: 1,
     color_1: '#5616D1',
-    color_2: '#4C74A8',
-    color_3: '#0ADFC5',
-    color_4: '#4D57D7',
-    color_5: '#E36A76',
+    color_2: '#1E4A77',
+    color_3: '#EC90A9',
+    color_4: '#EC62D4',
+    color_5: '#901346',
   },
   {
     id: 3,
     project_id: 2,
-    color_1: '#1830E0',
-    color_2: '#C3319A',
+    color_1: '#BCD04E',
+    color_2: '#326F64',
     color_3: '#28E5B4',
     color_4: '#289FD3',
     color_5: '#134D26',
@@ -59,8 +59,15 @@ app.locals.palettes = [
 
 //works
 app.get('/api/v1/projects', (request, response) => {
-  const projects = app.locals.projects
-  response.status(200).json({projects})
+  database('projects').select()
+    .then((projects) => {
+      response.status(200).json(projects)
+    })
+    .catch((error) => {
+      response.status(500).json({ error });
+    })
+  // const projects = app.locals.projects
+  // response.status(200).json({projects})
 })
 
 //works
