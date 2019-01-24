@@ -53,58 +53,100 @@ app.locals.palettes = [
   }
 ]
 
+//works
 app.get('/api/v1/projects', (request, response) => {
   const projects = app.locals.projects
-  response.json({projects})
+  response.status(200).json({projects})
 })
 
-app.get('/api/v1/projects/:id', (request, response) => {
-  const { id } = request.params
+//works
+app.get('/api/v1/palettes', (request, response) => {
   const palettes = app.locals.palettes
-  const matchingPalettes = palettes.filter((palette) => {
-    return palette.project_id === parseInt(id)
-  })
-  response.json({matchingPalettes})
+  response.status(200).json({palettes})
 })
 
+//works
+app.get('/api/v1/projects/:id', (request, response) => {
+  const id = parseInt(request.params.id)
+   const palettes = app.locals.palettes
+  const matchingProject = app.locals.projects.find((project) => {
+    return project.id === id
+  })
+  const matchingPalettes = palettes.filter((palette) => {
+    return palette.project_id === id
+  })
 
+  if (matchingPalettes.length > 0) {
+    response.status(200).json({matchingPalettes})
+  } else {
+    response.sendStatus(404)
+  }
+})
+
+// works
+app.get('/api/v1/palettes/:id', (request, response) => {
+  const id = parseInt(request.params.id)
+  console.log(id)
+  const matchingPalette = app.locals.palettes.find((palette) => {
+    return palette.id === id
+  })
+  if (matchingPalette) {
+    response.status(200).json({matchingPalette})
+  } else {
+    response.sendStatus(404)
+  }
+})
+
+//this works
 app.post('/api/v1/projects', (request, response) => {
-  const { project } = request.body
+  const project = request.body.project
   const id = Date.now() 
   if (project) {
     app.locals.projects.push({...project, id})
-    response.status(201).json({id, project})
+    response.status(201).json({...project, id})
   } else {
     response.status(422).send({
-      error: 'No Project'
+      error: 'No palette provided'
     })
   }
 })
 
-app.post('/api/v1/projects/:project_id/palettes', (request, response) => {
-  const { palette } = request.body
+//this works
+app.post('/api/v1/palettes', (request, response) => {
+  const palette = request.body.palette
   const id = Date.now() 
-  const { project_id } = request.params
   if (palette) {
-    app.locals.palettes.push({...palette, id, project_id})
-    response.status(201).json({id, palette, project_id})
+    app.locals.palettes.push({...palette, id})
+    response.status(201).json({...palette, id})
   } else {
     response.status(422).send({
-      error: 'No Palette'
+      error: 'No palette provided'
     })
   }
 })
 
-app.delete('/api/v1/projects/:project_id/palettes/:id', (request, response) => {
-  const { id } = request.params
+//this works
+app.delete('/api/v1/palettes/:id', (request, response) => {
+  const id = parseInt(request.params.id)
   let filteredPalettes = app.locals.palettes.filter((palette) => {
     return palette.id !== id
   })
   app.locals.palettes = filteredPalettes
-  response.json({filteredPalettes})
+  response.status(200).json({filteredPalettes})
 })
 
 
 app.listen(3000, () => {
   console.log('Express intro running on localhost:3000');
 });
+
+
+// {	"palette": {
+//   "project_id": "2",
+//   "color_1": "#000000",
+//   "color_2": "#FFFFFF",
+//   "color_3": "#BBBBBB",
+//   "color_4": "#000000",
+//   "color_5": "#FFFFFF"
+// }
+// }
