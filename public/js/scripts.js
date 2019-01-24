@@ -13,6 +13,8 @@ const hexTwo = document.querySelector('.hex2');
 const hexThree = document.querySelector('.hex3');
 const hexFour = document.querySelector('.hex4');
 const hexFive = document.querySelector('.hex5');
+const saveProjectBtn = document.querySelector('.save-project-btn');
+const projectDisplay = document.querySelector('.project-display');
 
 generateHex = () => {
   let color = '#';
@@ -51,7 +53,7 @@ displayColors = () => {
     colorFour.setAttribute('style', `background-color: ${colors[3]}`)
     hexFour.innerText = colors[3]
   }
-  if (!colorOne.classList.contains('locked')) {
+  if (!colorFive.classList.contains('locked')) {
     colorFive.setAttribute('style', `background-color: ${colors[4]}`) 
     hexFive.innerText = colors[4]
   }
@@ -63,7 +65,31 @@ toggleLock = (e) => {
     e.target.parentElement.classList.toggle('locked')
 }
 
+createProject = () => {
+  let newProject = document.createElement('div')
+  newProject.innerHTML = `<div class="project-name-header">
+  <p class="project-name">project one</p>
+</div>
+<div class="color-and-delete-container">
+  <div class="saved-colors-display">
+    <div class="saved-color"></div>
+    <div class="saved-color"></div>
+    <div class="saved-color"></div>
+    <div class="saved-color"></div>
+    <div class="saved-color"></div>
+  <div class="delete-display">
+    <p class="palette-name">palette name</p>
+    <button class="delete-btn"><i class="fas fa-trash-alt"></i></button>
+  </div>
+</div>`
+  projectDisplay.appendChild(newProject)
+}
+
+displayColors()
+
 generateBtn.addEventListener('click', displayColors)
 lockBtns.forEach((button) => {
   button.addEventListener('click', toggleLock)
 })
+saveProjectBtn.addEventListener('click', createProject)
+
