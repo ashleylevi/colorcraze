@@ -1,12 +1,16 @@
+// const environment = process.env.NODE_ENV || "development"
+// const configuration = require('./knexfile')[environment]
+// const database = require('knex')(configuration)
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
+
 app.use(bodyParser.json())
 
 // app.set('port', process.env.PORT || 3000)
 app.locals.title = 'Colorcraze'
 
-app.use(express.static('public'));
+app.use(express.static('public'))
 
 app.locals.projects = [
   {
