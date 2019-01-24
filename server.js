@@ -21,7 +21,6 @@ app.locals.projects = [
     id: 3,
     name: 'Project 3'
   }
-
 ]
 
 app.locals.palettes = [
