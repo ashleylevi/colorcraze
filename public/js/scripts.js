@@ -15,16 +15,22 @@ const hexFour = document.querySelector('.hex4');
 const hexFive = document.querySelector('.hex5');
 const saveProjectBtn = document.querySelector('.save-project-btn');
 const projectDisplay = document.querySelector('.project-display');
+const projectNameInput = document.querySelector('.project-name-input');
+const select = document.querySelector('select');
+const paletteNameInput = document.querySelector('.palette-name-input');
 
 displayColors()
-getProjects()
+fetchAllProjects()
+// displayProject()
+// getProjects()
 // displayAllProjects()
 
 generateBtn.addEventListener('click', displayColors)
 lockBtns.forEach((button) => {
   button.addEventListener('click', toggleLock)
 })
-saveProjectBtn.addEventListener('click', createProject)
+saveProjectBtn.addEventListener('click', saveProject)
+savePaletteBtn.addEventListener('click', savePalette)
 
 
 
@@ -77,7 +83,79 @@ function toggleLock(e) {
     e.target.parentElement.classList.toggle('locked')
 }
 
-function createProject() {
+function fetchAllProjects() {
+  fetch('/api/v1/projects')
+  .then(response => response.json())
+  .then(projects => displayProjects(projects))
+  .catch(error => console.log(error))
+}
+
+// function
+
+function saveProject() {
+  const projectName = projectNameInput.value
+  fetch('/api/v1/projects', {
+    method: 'POST',
+    body: JSON.stringify({project: {
+      name: projectName
+    }}), 
+    headers:  {
+    'Content-Type': 'application/json'
+    }
+  })
+    .then(response => response.json())
+    .then(project => console.log(project))
+    .catch(error => console.log(error))
+
+    fetchAllProjects()
+}
+
+function displayProjects(projects) {
+    addToDropDown(projects)
+    projects.forEach((project) => {
+      let newProject = document.createElement('div')
+      newProject.innerHTML = `<div class="project-name-header">
+      <p class="project-name" id=${project.id}>${project.name}</p>
+      </div>`
+    projectDisplay.appendChild(newProject)
+    })
+  
+}
+
+function addToDropDown(projects) {
+  projects.forEach((project) => {
+    let newProject = document.createElement('option')
+    newProject.innerHTML = `<option value=${project.id} class="project-name" id=${project.id}>${project.name}</option>`
+    select.appendChild(newProject)
+  })
+}
+
+function savePalette() {
+  console.log(select.value)
+  const paletteName = paletteNameInput.value
+  fetch('/api/v1/projects/:id/palettes', {
+    method: 'POST',
+    body: JSON.stringify({palette: {
+      palette_name: paletteName,
+      color_1: colorOne,
+      color_2: colorTwo,
+      color_3: colorThree,
+      color_4: colorFour,
+      color_5: colorFive
+    }}), 
+    headers:  {
+    'Content-Type': 'application/json'
+    }
+  })
+    .then(response => response.json())
+    .then(palette => console.log(palette))
+    .catch(error => console.log(error))
+
+}
+
+
+
+// function createProject() {
 
 
 //   let newProject = document.createElement('div')
@@ -97,23 +175,23 @@ function createProject() {
 //   </div>
 // </div>`
 //   projectDisplay.appendChild(newProject)
-}
+// }
 
-function getProjects() {
-  fetch('/api/v1/projects')
-    .then(response => response.json())
-    .then(projects => displayProjects((projects)))
-}
+// function getProjects() {
+//   fetch('/api/v1/projects')
+//     .then(response => response.json())
+//     .then(projects => displayProjects((projects)))
+// }
 
-function displayProjects(array) {
-  let newProject = document.createElement('div')
-  array.forEach((project) => {
-    newProject.innerHTML = `<div class="project-name-header">
-    <p class="project-name">${project.name}</p>
-    </div>`
-  projectDisplay.appendChild(newProject)
-  })
-}
+// function displayProjects(array) {
+//   let newProject = document.createElement('div')
+//   array.forEach((project) => {
+//     newProject.innerHTML = `<div class="project-name-header">
+//     <p class="project-name">${project.name}</p>
+//     </div>`
+//   projectDisplay.appendChild(newProject)
+//   })
+// }
 
 
     // let nonDuplicateProjects = []
@@ -141,31 +219,31 @@ function getPalettes() {
     .catch(error => console.log(error))
 }
 
-function displayAllProjects() {
-  const projects = getProjects()
-  const palettes = getPalettes()
-  projects.forEach((project) => {
-    let newProject = document.createElement('div')
-    newProject.innerHTML = `<div class="project-name-header">
-  <p class="project-name">${project.name}</p>
-</div>
-<div class="color-and-delete-container">
-  <div class="saved-colors-display">
-    <div class="saved-color"></div>
-    <div class="saved-color"></div>
-    <div class="saved-color"></div>
-    <div class="saved-color"></div>
-    <div class="saved-color"></div>
-  <div class="delete-display">
-    <p class="palette-name">palette name</p>
-    <button class="delete-btn"><i class="fas fa-trash-alt"></i></button>
-  </div>
-</div>`
-  projectDisplay.appendChild(newProject)
+// function displayAllProjects() {
+//   const projects = getProjects()
+//   const palettes = getPalettes()
+//   projects.forEach((project) => {
+//     let newProject = document.createElement('div')
+//     newProject.innerHTML = `<div class="project-name-header">
+//   <p class="project-name">${project.name}</p>
+// </div>
+// <div class="color-and-delete-container">
+//   <div class="saved-colors-display">
+//     <div class="saved-color"></div>
+//     <div class="saved-color"></div>
+//     <div class="saved-color"></div>
+//     <div class="saved-color"></div>
+//     <div class="saved-color"></div>
+//   <div class="delete-display">
+//     <p class="palette-name">palette name</p>
+//     <button class="delete-btn"><i class="fas fa-trash-alt"></i></button>
+//   </div>
+// </div>`
+//   projectDisplay.appendChild(newProject)
 
 
-  })
-}
+//   })
+// }
 
 
 
