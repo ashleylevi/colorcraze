@@ -1,7 +1,7 @@
 const generateBtn = document.querySelector('.generate-btn');
 const lockBtns = document.querySelectorAll('.fa-unlock-alt');
 const unlockBtns = document.querySelectorAll('.fa-lock');
-const saveBtn = document.querySelector('.save-btn');
+const savePaletteBtn = document.querySelector('.save-btn');
 const deleteBtn = document.querySelector('.delete-btn');
 const colorOne = document.querySelector('.color1');
 const colorTwo = document.querySelector('.color2');
@@ -16,7 +16,19 @@ const hexFive = document.querySelector('.hex5');
 const saveProjectBtn = document.querySelector('.save-project-btn');
 const projectDisplay = document.querySelector('.project-display');
 
-generateHex = () => {
+displayColors()
+getProjects()
+// displayAllProjects()
+
+generateBtn.addEventListener('click', displayColors)
+lockBtns.forEach((button) => {
+  button.addEventListener('click', toggleLock)
+})
+saveProjectBtn.addEventListener('click', createProject)
+
+
+
+function generateHex() {
   let color = '#';
   for (let i=0; i < 6; i++) {
     let hexValues = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F' ]
@@ -26,7 +38,7 @@ generateHex = () => {
   return color
 }
 
-generateColors = () => {
+function generateColors() {
   let colors = [];
   for (let i=0; i < 5; i++) {
     let color = generateHex()
@@ -35,7 +47,7 @@ generateColors = () => {
   return colors
 }
 
-displayColors = () => {
+function displayColors() {
   let colors = generateColors()
   if (!colorOne.classList.contains('locked')) {
     colorOne.setAttribute('style', `background-color: ${colors[0]}`)
@@ -59,16 +71,83 @@ displayColors = () => {
   }
 }
 
-toggleLock = (e) => {
+function toggleLock(e) {
     e.target.classList.toggle('fa-unlock-alt')
     e.target.classList.toggle('fa-lock')
     e.target.parentElement.classList.toggle('locked')
 }
 
-createProject = () => {
+function createProject() {
+
+
+//   let newProject = document.createElement('div')
+//   newProject.innerHTML = `<div class="project-name-header">
+//   <p class="project-name">project one</p>
+// </div>
+// <div class="color-and-delete-container">
+//   <div class="saved-colors-display">
+//     <div class="saved-color"></div>
+//     <div class="saved-color"></div>
+//     <div class="saved-color"></div>
+//     <div class="saved-color"></div>
+//     <div class="saved-color"></div>
+//   <div class="delete-display">
+//     <p class="palette-name">palette name</p>
+//     <button class="delete-btn"><i class="fas fa-trash-alt"></i></button>
+//   </div>
+// </div>`
+//   projectDisplay.appendChild(newProject)
+}
+
+function getProjects() {
+  fetch('/api/v1/projects')
+    .then(response => response.json())
+    .then(projects => displayProjects((projects)))
+}
+
+function displayProjects(array) {
   let newProject = document.createElement('div')
-  newProject.innerHTML = `<div class="project-name-header">
-  <p class="project-name">project one</p>
+  array.forEach((project) => {
+    newProject.innerHTML = `<div class="project-name-header">
+    <p class="project-name">${project.name}</p>
+    </div>`
+  projectDisplay.appendChild(newProject)
+  })
+}
+
+
+    // let nonDuplicateProjects = []
+    // fetch('/api/v1/projects')
+    //   .then(response => response.json())
+    //   .then(projects => projects.forEach((project) => {
+    //     if(!nonDuplicateProjects.includes(project)) {
+    //       nonDuplicateProjects.push(project)
+    //     }
+    //   }))
+    //   nonDuplicateProjects.forEach((proj) => {
+    //     let newProject = document.createElement('div')
+    //     newProject.innerHTML = `<div class="project-name-header">
+    //     <p class="project-name">${proj.name}</p>
+    //     </div>`
+    //   projectDisplay.appendChild(newProject)
+    
+    //   })
+
+
+function getPalettes() {
+  fetch('/api/v1/palettes')
+    .then(response => response.json())
+    .then(palettes => console.log(palettes) )
+    .catch(error => console.log(error))
+}
+
+function displayAllProjects() {
+  const projects = getProjects()
+  const palettes = getPalettes()
+  projects.forEach((project) => {
+    let newProject = document.createElement('div')
+    newProject.innerHTML = `<div class="project-name-header">
+  <p class="project-name">${project.name}</p>
 </div>
 <div class="color-and-delete-container">
   <div class="saved-colors-display">
@@ -83,13 +162,10 @@ createProject = () => {
   </div>
 </div>`
   projectDisplay.appendChild(newProject)
+
+
+  })
 }
 
-displayColors()
 
-generateBtn.addEventListener('click', displayColors)
-lockBtns.forEach((button) => {
-  button.addEventListener('click', toggleLock)
-})
-saveProjectBtn.addEventListener('click', createProject)
 

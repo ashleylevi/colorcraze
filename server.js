@@ -136,7 +136,7 @@ app.delete('/api/v1/palettes/:id', (request, response) => {
 })
 
 
-app.listen(3000, () => {
+app.listen(app.get('port'), () => {
   console.log('Express intro running on localhost:3000');
 });
 
