@@ -7,7 +7,7 @@ const app = express()
 
 app.use(bodyParser.json())
 
-// app.set('port', process.env.PORT || 3000)
+app.set('port', process.env.PORT || 3000)
 app.locals.title = 'Colorcraze'
 
 app.use(express.static('public'))
@@ -25,15 +25,15 @@ app.get('/api/v1/projects', (request, response) => {
 })
 
 //get all palettes
-// app.get('/api/v1/palettes', (request, response) => {
-//   database('palettes').select()
-//     .then((palettes) => {
-//       response.status(200).json(palettes)
-//     })
-//     .catch((error) => {
-//       response.status(500).json({ error });
-//     })
-// })
+app.get('/api/v1/palettes', (request, response) => {
+  database('palettes').select()
+    .then((palettes) => {
+      response.status(200).json(palettes)
+    })
+    .catch((error) => {
+      response.status(500).json({ error });
+    })
+})
 
 //get all palettes for a specific project
 app.get('/api/v1/projects/:id', (request, response) => {
@@ -110,24 +110,33 @@ app.post('/api/v1/projects/:id/palettes', (request, response) => {
 })
 
 //delete a palette from a project
-app.delete('/api/v1/projects/:id/palettes/:palette_id', (request, response) => {
-  const id = parseInt(request.params.id)
-  const palette_id = parseInt(request.params.palette_id)
+app.delete('/api/v1/palettes/:id', (request, response) => {
 
-  database('palettes').select()
-    .then((palettes) => {
-      const filteredPalettes = palettes.filter((palette) => {
-        return palette.id !== palette_id
-      })
-      response.status(200).json(filteredPalettes)
+  const palette_id = parseInt(request.params.id)
+
+  database('palettes').where('id', palette_id).delete()
+    .then(palette => {
+      response.status(201).json({ id: palette[0] })
     })
-    .catch((error) => {
-      response.status(500).json({ error });
+    .catch(error => {
+      response.status(500).json({ error })
     })
+
+
+  // database('palettes').select()
+  //   .then((palettes) => {
+  //     const filteredPalettes = palettes.filter((palette) => {
+  //       return palette.id !== palette_id
+  //     })
+  //     response.status(200).json(filteredPalettes)
+  //   })
+  //   .catch((error) => {
+  //     response.status(500).json({ error });
+  //   })
 })
 
 
-app.listen(3000, () => {
+app.listen(app.get('port'), () => {
   console.log('Express intro running on localhost:3000');
 });
 
