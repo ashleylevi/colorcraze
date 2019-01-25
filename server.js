@@ -12,52 +12,8 @@ app.locals.title = 'Colorcraze'
 
 app.use(express.static('public'))
 
-app.locals.projects = [
-  {
-    id: 1,
-    name: 'Project 1'
-  },
-  {
-    id: 2,
-    name: 'Project 2'
-  },
-  {
-    id: 3,
-    name: 'Project 3'
-  }
-]
 
-app.locals.palettes = [
-  {
-    id: 1,
-    project_id: 1,
-    color_1: '#0E9ABC',
-    color_2: '#AA3916',
-    color_3: '#5BAFDF',
-    color_4: '#289FD3',
-    color_5: '#6EA952',
-  },
-  {
-    id: 2,
-    project_id: 1,
-    color_1: '#5616D1',
-    color_2: '#1E4A77',
-    color_3: '#EC90A9',
-    color_4: '#EC62D4',
-    color_5: '#901346',
-  },
-  {
-    id: 3,
-    project_id: 2,
-    color_1: '#BCD04E',
-    color_2: '#326F64',
-    color_3: '#28E5B4',
-    color_4: '#289FD3',
-    color_5: '#134D26',
-  }
-]
-
-//works
+//get all projects
 app.get('/api/v1/projects', (request, response) => {
   database('projects').select()
     .then((projects) => {
@@ -66,84 +22,108 @@ app.get('/api/v1/projects', (request, response) => {
     .catch((error) => {
       response.status(500).json({ error });
     })
-  // const projects = app.locals.projects
-  // response.status(200).json({projects})
 })
 
-//works
-app.get('/api/v1/palettes', (request, response) => {
-  const palettes = app.locals.palettes
-  response.status(200).json({palettes})
-})
+//get all palettes
+// app.get('/api/v1/palettes', (request, response) => {
+//   database('palettes').select()
+//     .then((palettes) => {
+//       response.status(200).json(palettes)
+//     })
+//     .catch((error) => {
+//       response.status(500).json({ error });
+//     })
+// })
 
-//works
+//get all palettes for a specific project
 app.get('/api/v1/projects/:id', (request, response) => {
   const id = parseInt(request.params.id)
-   const palettes = app.locals.palettes
-  const matchingProject = app.locals.projects.find((project) => {
-    return project.id === id
-  })
-  const matchingPalettes = palettes.filter((palette) => {
-    return palette.project_id === id
-  })
+  database('palettes').select()
+    .then((palettes) => {
+      const matchingPalettes = palettes.filter((palette) => {
+        return palette.project_id === id
+      })
+      response.status(200).json(matchingPalettes)
+    })
+    .catch((error) => {
+      response.status(500).json({ error });
+    })
 
-  if (matchingPalettes.length > 0) {
-    response.status(200).json({matchingPalettes})
-  } else {
-    response.sendStatus(404)
-  }
 })
 
-// works
-app.get('/api/v1/palettes/:id', (request, response) => {
-  const id = parseInt(request.params.id)
-  console.log(id)
-  const matchingPalette = app.locals.palettes.find((palette) => {
-    return palette.id === id
-  })
-  if (matchingPalette) {
-    response.status(200).json({matchingPalette})
-  } else {
-    response.sendStatus(404)
-  }
+// get a specific palette from a project
+app.get('/api/v1/projects/:id/palettes/:palette_id', (request, response) => {
+  const paletteId = parseInt(request.params.palette_id)
+  database('palettes').select()
+    .then((palettes) => {
+      const matchingPalette = palettes.find((palette) => {
+        return palette.id === paletteId
+      })
+      response.status(200).json(matchingPalette)
+    })
+    .catch((error) => {
+      response.status(500).json({ error });
+    })
 })
 
-//this works
+//post a new project
 app.post('/api/v1/projects', (request, response) => {
-  const project = request.body.project
-  const id = Date.now() 
-  if (project) {
-    app.locals.projects.push({...project, id})
-    response.status(201).json({...project, id})
-  } else {
-    response.status(422).send({
-      error: 'No palette provided'
-    })
+  const { project } = request.body;
+  
+  for (let requiredParameter of ['name']){
+    if (!project[requiredParameter]) {
+      return response
+        .status(422)
+        .send({ error: `Expected format: {name: <string>}. You're missing a "${requiredParameter}" property`})
+    }
   }
+
+  database('projects').insert(project, 'id')
+    .then(projectId => {
+      response.status(201).json({...project, id: projectId[0] })
+    })
+    .catch(error => {
+      response.status(500).json({ error})
+    });
 })
 
-//this works
-app.post('/api/v1/palettes', (request, response) => {
-  const palette = request.body.palette
-  const id = Date.now() 
-  if (palette) {
-    app.locals.palettes.push({...palette, id})
-    response.status(201).json({...palette, id})
-  } else {
-    response.status(422).send({
-      error: 'No palette provided'
-    })
+//post a new palette
+app.post('/api/v1/projects/:id/palettes', (request, response) => {
+  const { palette } = request.body;
+  const project_id = parseInt(request.params.id)
+  
+  for (let requiredParameter of ['palette_name', 'color_1', 'color_2', 'color_3', 'color_4', 'color_5']){
+    if (!palette[requiredParameter]) {
+      return response
+        .status(422)
+        .send({ error: `Expected format: {palette_name: <string>, color_1: <string>, color_2: <string>, color_3: <string>, color_4: <string>, color_5: <string>}. You're missing a "${requiredParameter}" property`})
+    }
   }
+
+  database('palettes').insert({...palette, project_id}, 'id')
+    .then(paletteId => {
+      response.status(201).json({...palette, id: paletteId[0] })
+    })
+    .catch(error => {
+      response.status(500).json({ error})
+    });
 })
 
-//this works
-app.delete('/api/v1/palettes/:id', (request, response) => {
+//delete a palette from a project
+app.delete('/api/v1/projects/:id/palettes/:palette_id', (request, response) => {
   const id = parseInt(request.params.id)
-  let filteredPalettes = app.locals.palettes.filter((palette) => {
-    return palette.id !== id
-  })
-  app.locals.palettes = filteredPalettes
-  response.status(200).json({filteredPalettes})
+  const palette_id = parseInt(request.params.palette_id)
+
+  database('palettes').select()
+    .then((palettes) => {
+      const filteredPalettes = palettes.filter((palette) => {
+        return palette.id !== palette_id
+      })
+      response.status(200).json(filteredPalettes)
+    })
+    .catch((error) => {
+      response.status(500).json({ error });
+    })
 })
 
 
@@ -151,13 +131,3 @@ app.listen(3000, () => {
   console.log('Express intro running on localhost:3000');
 });
 
-
-// {	"palette": {
-//   "project_id": "2",
-//   "color_1": "#000000",
-//   "color_2": "#FFFFFF",
-//   "color_3": "#BBBBBB",
-//   "color_4": "#000000",
-//   "color_5": "#FFFFFF"
-// }
-// }
