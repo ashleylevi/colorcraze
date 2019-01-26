@@ -5,16 +5,16 @@ const lockBtns = document.querySelectorAll('.fa-unlock-alt');
 const unlockBtns = document.querySelectorAll('.fa-lock');
 const savePaletteBtn = document.querySelector('.save-btn');
 const deleteBtn = document.querySelector('.delete-btn');
-const colorOne = document.querySelector('.color1');
-const colorTwo = document.querySelector('.color2');
-const colorThree = document.querySelector('.color3');
-const colorFour = document.querySelector('.color4');
-const colorFive = document.querySelector('.color5');
-const hexOne = document.querySelector('.hex1');
-const hexTwo = document.querySelector('.hex2');
-const hexThree = document.querySelector('.hex3');
-const hexFour = document.querySelector('.hex4');
-const hexFive = document.querySelector('.hex5');
+let colorOne = document.querySelector('.color1');
+let colorTwo = document.querySelector('.color2');
+let colorThree = document.querySelector('.color3');
+let colorFour = document.querySelector('.color4');
+let colorFive = document.querySelector('.color5');
+let hexOne = document.querySelector('.hex1');
+let hexTwo = document.querySelector('.hex2');
+let hexThree = document.querySelector('.hex3');
+let hexFour = document.querySelector('.hex4');
+let hexFive = document.querySelector('.hex5');
 const saveProjectBtn = document.querySelector('.save-project-btn');
 let projectDisplay = document.querySelector('.project-display');
 const projectNameInput = document.querySelector('.project-name-input');
@@ -23,9 +23,7 @@ const paletteNameInput = document.querySelector('.palette-name-input');
 
 displayColors()
 fetchAllProjects()
-// displayProject()
-// getProjects()
-// displayAllProjects()
+
 
 generateBtn.addEventListener('click', displayColors)
 lockBtns.forEach((button) => {
@@ -93,7 +91,6 @@ function fetchAllProjects() {
   .catch(error => console.log(error))
 }
 
-// function
 
 function saveProject() {
   const projectName = projectNameInput.value
@@ -114,8 +111,6 @@ function saveProject() {
 
 function displayProjects(projects) {
 projectDisplay.innerHTML = ''
-
-
     addToDropDown(projects)
     projects.forEach((project) => {
       var newProject = document.createElement('div')
@@ -129,25 +124,24 @@ projectDisplay.innerHTML = ''
 
 function addToDropDown(projects) {
   select.innerHTML = ''
-  projects.forEach((project) => {
-    let newProject = document.createElement('option')
-    newProject.innerHTML = `<option value=${project.id} class="project-name" id=${project.id}>${project.name}</option>`
-    select.appendChild(newProject)
-  })
+  select.options.length = projects.length;
+  for (let i=0; i<projects.length; i++) {
+    select.options[i] = new Option(`${projects[i].name}`, `${projects[i].id}`)
+  }
 }
 
 function savePalette() {
-  console.log(select.value)
+  const id = select.value
   const paletteName = paletteNameInput.value
-  fetch('/api/v1/projects/:id/palettes', {
+  fetch(`/api/v1/projects/${id}/palettes`, {
     method: 'POST',
     body: JSON.stringify({palette: {
       palette_name: paletteName,
-      color_1: colorOne,
-      color_2: colorTwo,
-      color_3: colorThree,
-      color_4: colorFour,
-      color_5: colorFive
+      color_1: hexOne.innerText,
+      color_2: hexTwo.innerText,
+      color_3: hexThree.innerText,
+      color_4: hexFour.innerText,
+      color_5: hexFive.innerText
     }}), 
     headers:  {
     'Content-Type': 'application/json'
@@ -156,7 +150,6 @@ function savePalette() {
     .then(response => response.json())
     .then(palette => console.log(palette))
     .catch(error => console.log(error))
-
 }
 
 
