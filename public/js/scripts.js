@@ -18,6 +18,7 @@ const projectDisplay = document.querySelector('.project-display');
 const projectNameInput = document.querySelector('.project-name-input');
 const select = document.querySelector('select');
 const paletteNameInput = document.querySelector('.palette-name-input');
+const savedColorsDisplay = document.querySelector('.saved-colors-display');
 
 displayColors()
 fetchAllProjects()
@@ -88,7 +89,12 @@ function fetchAllProjects() {
   .catch(error => console.log(error))
 }
 
-// function
+function fetchPalettes(projectId) {
+  fetch(`/api/v1/projects/${projectId}`)
+  .then(response => response.json())
+  .then(palettes => displayProjects([],palettes))
+  .catch(error =>console.log(error))
+}
 
 function saveProject() {
   const projectName = projectNameInput.value
@@ -108,9 +114,27 @@ function saveProject() {
     fetchAllProjects()
 }
 
-function displayProjects(projects) {
+
+
+function displayProjects(projects, palettes = []) {
     addToDropDown(projects)
+  
+    projectDisplay.innerHTML = ''
+   
+  //   palettes.forEach((palette) => {
+  //     console.log(palette)
+  //     let newPalette = document.createElement('div')
+  //     newPalette.innerHTML = `<div class="saved-color" background-color: ${palette.color_1}></div>
+  //     <div class="saved-color"  style="background-color: ${palette.color_2}"></div>
+  //     <div class="saved-color" background-color: ${palette.color_3}></div>
+  //     <div class="saved-color" background-color: ${palette.color_4}></div>
+  //     <div class="saved-color" background-color: ${palette.color_5}></div>`
+  //   savedColorsDisplay.appendChild(newPalette)
+  // })
+
+
     projects.forEach((project) => {
+
       let newProject = document.createElement('div')
       newProject.innerHTML = `<div class="project-name-header">
       <p class="project-name" id=${project.id}>${project.name}</p>
@@ -152,14 +176,10 @@ function savePalette() {
     .then(response => response.json())
     .then(palette => console.log(palette))
     .catch(error => console.log(error))
+    fetchPalettes(id)
 }
 
-function getPalettes() {
-  fetch('/api/v1/palettes')
-    .then(response => response.json())
-    .then(palettes => console.log(palettes) )
-    .catch(error => console.log(error))
-}
+
 
 // function displayAllProjects() {
 //   const projects = getProjects()
