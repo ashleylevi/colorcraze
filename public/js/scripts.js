@@ -31,6 +31,7 @@ lockBtns.forEach((button) => {
 saveProjectBtn.addEventListener('click', saveProject)
 savePaletteBtn.addEventListener('click', savePalette)
 projectDisplay.addEventListener('click', deletePalette)
+projectDisplay.addEventListener('click', showPalette)
 
 function generateHex() {
   let color = '#';
@@ -101,15 +102,6 @@ function fetchPalettes(projects) {
   })
 }
 
-
-// function fetchAllPalettes() {
-//   fetch('/api/v1/projects')
-//   .then(response => response.json())
-//   .then(palettes => console.log(palettes))
-//   .catch(error => console.log(error))
-// } 
-
-
 function checkDuplicates(projectName) {
   let elements = document.querySelectorAll('.project-name')
   let projectNames = []
@@ -122,7 +114,6 @@ function checkDuplicates(projectName) {
   })
   return found
 }
-
 
 function saveProject() {
   const projectName = projectNameInput.value
@@ -169,13 +160,14 @@ function displayPalettes(palettes, projectId) {
   palettes.forEach((palette) => {
     var newPalette = document.createElement('div')
     newPalette.classList.add('saved-colors-display')
+    newPalette.classList.add(palette.id)
    newPalette.innerHTML = `<div class="saved-color" style= "background:${palette.color_1}"></div>
    <div class="saved-color" style= "background:${palette.color_2}"></div>
    <div class="saved-color" style= "background:${palette.color_3}"></div>
    <div class="saved-color" style= "background:${palette.color_4}"></div>
    <div class="saved-color" style= "background:${palette.color_5}"></div>
    <div class="delete-display">
-    <p class="palette-name">${palette.palette_name}</p>
+    <p class="palette-name" id=${palette.id}>${palette.palette_name}</p>
    <button class="delete-btn"><i class="fas fa-trash-alt" id=${palette.id}></i></button>
  </div>`
    colorsDisplay.appendChild(newPalette)
@@ -215,17 +207,50 @@ function savePalette() {
 
 function deletePalette(e) {
   let paletteId = e.target.id
-  fetch(`/api/v1/palettes/${paletteId}`, {
-      method: 'DELETE',
-      body: JSON.stringify({paletteId}),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => response.json())
-    .then(data => fetchAllProjects())
+  if (e.target.classList.contains('fa-trash-alt')) {
+    fetch(`/api/v1/palettes/${paletteId}`, {
+        method: 'DELETE',
+        body: JSON.stringify({paletteId}),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => fetchAllProjects())
+  }
 }
 
+function showPalette(e) {
+  let paletteId;
+  if (e.target.className === 'palette-name') {
+    paletteId = e.target.id 
+    fetchAllPalettes(paletteId)
+  }
+}
+
+function fetchAllPalettes(id) {
+  fetch('/api/v1/palettes')
+  .then(response => response.json())
+  .then(palettes => filterPalettes(palettes, id))
+  .catch(error => console.log(error))
+} 
+
+function filterPalettes(palettes, id) {
+  const found = palettes.find((palette) => {
+    return palette.id === parseInt(id)
+  })
+  colorOne.setAttribute('style', `background-color: ${found.color_1}`)
+  hexOne.innerText = found.color_1
+  colorTwo.setAttribute('style', `background-color: ${found.color_2}`)
+  hexTwo.innerText = found.color_2
+  colorThree.setAttribute('style', `background-color: ${found.color_3}`)
+  hexThree.innerText = found.color_3
+  colorFour.setAttribute('style', `background-color: ${found.color_4}`)
+  hexFour.innerText = found.color_4
+  colorFive.setAttribute('style', `background-color: ${found.color_5}`)
+  hexFive.innerText = found.color_5
+
+}
 
 
 

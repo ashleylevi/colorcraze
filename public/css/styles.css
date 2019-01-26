@@ -222,9 +222,11 @@ input[type=text] {
 }
 
 .palette-name {
-  font-size: 18px;
+  font-size: 20px;
   line-height: 3.2em;
   color: #c3c3c3;
+  transition: .2s;
+  font-weight: 700;
 }
 
 .fa-trash-alt {
@@ -234,7 +236,7 @@ input[type=text] {
   transition: .2s;
 }
 
-.fa-trash-alt:hover {
+.fa-trash-alt:hover, .palette-name:hover {
   cursor: pointer;
   color: #fff;
 }
