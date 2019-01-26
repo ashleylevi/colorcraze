@@ -124,7 +124,8 @@ function saveProject() {
   })
     .then(response => response.json())
     .then(project => fetchAllProjects())
-    .catch(error => console.log(error))  
+    .catch(error => console.log(error)) 
+    projectNameInput.value = '' 
 }
 
 function displayProjects(projects) {
@@ -189,6 +190,7 @@ function savePalette() {
     .then(response => response.json())
     .then(palette => fetchAllProjects())
     .catch(error => console.log(error))  
+    paletteNameInput.value = ''
 }
 
 
