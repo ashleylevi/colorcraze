@@ -47,6 +47,7 @@ body {
 .button-container {
   display: flex;
   justify-content: flex-end;
+  margin-right: 100px;
 }
 
 .palette-display {
@@ -100,7 +101,7 @@ body {
 }
 
 .create-palette {
-  margin: 10px 0 0 30px;
+  margin: 10px 0 0 125px;
   display: flex;
   align-items: center;
   color: #c3c3c3;
@@ -110,7 +111,7 @@ body {
 }
 
 .save-container {
-  margin: 10px 0 0 30px;
+  margin: 10px 0 0 125px;
   display: flex;
   align-items: center;
 }
