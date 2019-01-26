@@ -1,3 +1,5 @@
+
+
 const generateBtn = document.querySelector('.generate-btn');
 const lockBtns = document.querySelectorAll('.fa-unlock-alt');
 const unlockBtns = document.querySelectorAll('.fa-lock');
@@ -14,7 +16,7 @@ const hexThree = document.querySelector('.hex3');
 const hexFour = document.querySelector('.hex4');
 const hexFive = document.querySelector('.hex5');
 const saveProjectBtn = document.querySelector('.save-project-btn');
-const projectDisplay = document.querySelector('.project-display');
+let projectDisplay = document.querySelector('.project-display');
 const projectNameInput = document.querySelector('.project-name-input');
 const select = document.querySelector('select');
 const paletteNameInput = document.querySelector('.palette-name-input');
@@ -84,6 +86,7 @@ function toggleLock(e) {
 }
 
 function fetchAllProjects() {
+  console.log('fetching!')
   fetch('/api/v1/projects')
   .then(response => response.json())
   .then(projects => displayProjects(projects))
@@ -104,16 +107,18 @@ function saveProject() {
     }
   })
     .then(response => response.json())
-    .then(project => console.log(project))
+    .then(project => fetchAllProjects())
     .catch(error => console.log(error))
-
-    fetchAllProjects()
+   
 }
 
 function displayProjects(projects) {
+projectDisplay.innerHTML = ''
+
+
     addToDropDown(projects)
     projects.forEach((project) => {
-      let newProject = document.createElement('div')
+      var newProject = document.createElement('div')
       newProject.innerHTML = `<div class="project-name-header">
       <p class="project-name" id=${project.id}>${project.name}</p>
       </div>`
@@ -123,6 +128,7 @@ function displayProjects(projects) {
 }
 
 function addToDropDown(projects) {
+  select.innerHTML = ''
   projects.forEach((project) => {
     let newProject = document.createElement('option')
     newProject.innerHTML = `<option value=${project.id} class="project-name" id=${project.id}>${project.name}</option>`
