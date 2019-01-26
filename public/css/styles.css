@@ -237,9 +237,9 @@ input[type=text] {
   color: #fff;
 }
 
-.colors-container {
+.saved-colors-display {
   display: flex;
-  margin-bottom: 50px;
+  margin-bottom: 150px;
 }
 
 

@@ -139,7 +139,7 @@ function displayProjects(projects) {
     projects.forEach((project) => {
       var newProject = document.createElement('div')
       newProject.innerHTML = `<div class="project-name-header">
-      <p class="project-name" id=${project.id}>${project.name}</p>
+      <p class="project-name">${project.name}</p>
       </div>
       <div class="color-and-delete-container">
         <div class="saved-colors-display" id=${project.id}></div>
@@ -152,9 +152,8 @@ function displayPalettes(palettes, projectId) {
   let colorsDisplay = document.getElementById(`${projectId}`)
   colorsDisplay.innerHTML = ''
   palettes.forEach((palette) => {
-    console.log(palette)
     var newPalette = document.createElement('div')
-    newPalette.classList.add('colors-container')
+    newPalette.classList.add('saved-colors-display')
    newPalette.innerHTML = `<div class="saved-color" style= "background:${palette.color_1}"></div>
    <div class="saved-color" style= "background:${palette.color_2}"></div>
    <div class="saved-color" style= "background:${palette.color_3}"></div>
