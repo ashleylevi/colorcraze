@@ -24,6 +24,7 @@ let savedColorsDisplay = document.querySelector('.saved-colors-display');
 
 displayColors()
 fetchAllProjects()
+fetchAllPalettes()
 
 
 generateBtn.addEventListener('click', displayColors)
@@ -98,6 +99,13 @@ function fetchPalettes(projectId) {
   .then(palettes => displayPalettes(palettes, projectId))
   .catch(error =>console.log(error))
 }
+
+function fetchAllPalettes() {
+  fetch('/api/v1/projects')
+  .then(response => response.json())
+  .then(palettes => console.log(palettes))
+  .catch(error => console.log(error))
+} 
 
 
 function saveProject() {
