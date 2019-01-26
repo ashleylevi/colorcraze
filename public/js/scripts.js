@@ -89,16 +89,24 @@ function fetchAllProjects() {
   console.log('fetching!')
   fetch('/api/v1/projects')
   .then(response => response.json())
-  .then(projects => displayProjects(projects))
+  .then(projects => fetchPalettes(projects))
   .catch(error => console.log(error))
 }
 
-function fetchPalettes(projectId) {
-  fetch(`/api/v1/projects/${projectId}`)
-  .then(response => response.json())
-  .then(palettes => displayPalettes(palettes, projectId))
-  .catch(error =>console.log(error))
+function fetchPalettes(projects) {
+  displayProjects(projects)
+  let projectIds = projects.map((project) => {
+    return project.id
+  })
+  projectIds.forEach((projectId) => {
+    fetch(`/api/v1/projects/${projectId}`)
+    .then(response => response.json())
+    .then(palettes => displayPalettes(palettes, projectId))
+    .catch(error =>console.log(error))
+  })
+  
 }
+
 
 function fetchAllPalettes() {
   fetch('/api/v1/projects')
@@ -187,7 +195,7 @@ function savePalette() {
     }
   })
     .then(response => response.json())
-    .then(palette => fetchPalettes(id))
+    .then(palette => fetchAllProjects())
     .catch(error => console.log(error))
     
 }
