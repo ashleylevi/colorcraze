@@ -19,10 +19,10 @@ const projectNameInput = document.querySelector('.project-name-input');
 const select = document.querySelector('select');
 const paletteNameInput = document.querySelector('.palette-name-input');
 let savedColorsDisplay = document.querySelector('.saved-colors-display');
+let duplicateFeedback = document.querySelector('.duplicates');
 
 displayColors()
 fetchAllProjects()
-
 
 generateBtn.addEventListener('click', displayColors)
 lockBtns.forEach((button) => {
@@ -30,8 +30,7 @@ lockBtns.forEach((button) => {
 })
 saveProjectBtn.addEventListener('click', saveProject)
 savePaletteBtn.addEventListener('click', savePalette)
-
-
+// deleteBtn.addEventListener('click', deletePalette)
 
 function generateHex() {
   let color = '#';
@@ -111,21 +110,42 @@ function fetchPalettes(projects) {
 // } 
 
 
+function checkDuplicates(projectName) {
+  let elements = document.querySelectorAll('.project-name')
+  let projectNames = []
+  elements.forEach((project) => {
+    projectNames.push(project)
+
+  })
+  let found = projectNames.find((name) => {
+    return name.innerText === projectName
+  })
+  return found
+}
+
+
 function saveProject() {
   const projectName = projectNameInput.value
-  fetch('/api/v1/projects', {
-    method: 'POST',
-    body: JSON.stringify({project: {
-      name: projectName
-    }}), 
-    headers:  {
-    'Content-Type': 'application/json'
-    }
-  })
-    .then(response => response.json())
-    .then(project => fetchAllProjects())
-    .catch(error => console.log(error)) 
-    projectNameInput.value = '' 
+  let duplicate = checkDuplicates(projectName)
+  if (!duplicate) {
+    fetch('/api/v1/projects', {
+      method: 'POST',
+      body: JSON.stringify({project: {
+        name: projectName
+      }}), 
+      headers:  {
+      'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(project => fetchAllProjects())
+      .catch(error => console.log(error)) 
+      projectNameInput.value = '' 
+      duplicateFeedback.innerText = ''
+  }
+  else {
+    duplicateFeedback.innerText = 'You already have a project with this name!'
+  }
 }
 
 function displayProjects(projects) {
@@ -193,6 +213,9 @@ function savePalette() {
     paletteNameInput.value = ''
 }
 
+// deletePalette() {
+
+// }
 
 
 

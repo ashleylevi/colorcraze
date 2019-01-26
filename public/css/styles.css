@@ -244,4 +244,11 @@ input[type=text] {
   margin-bottom: 30px;
 }
 
+.duplicates {
+  color: red;
+  margin: 10px 0 0 30px;
+  display: flex;
+  align-items: center;
+}
+
 
