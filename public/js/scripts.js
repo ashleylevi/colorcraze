@@ -1,5 +1,3 @@
-
-
 const generateBtn = document.querySelector('.generate-btn');
 const lockBtns = document.querySelectorAll('.fa-unlock-alt');
 const unlockBtns = document.querySelectorAll('.fa-lock');
@@ -85,7 +83,6 @@ function toggleLock(e) {
 }
 
 function fetchAllProjects() {
-  console.log('fetching!')
   fetch('/api/v1/projects')
   .then(response => response.json())
   .then(projects => fetchPalettes(projects))
@@ -103,7 +100,6 @@ function fetchPalettes(projects) {
     .then(palettes => displayPalettes(palettes, projectId))
     .catch(error =>console.log(error))
   })
-  
 }
 
 
@@ -128,8 +124,7 @@ function saveProject() {
   })
     .then(response => response.json())
     .then(project => fetchAllProjects())
-    .catch(error => console.log(error))
-   
+    .catch(error => console.log(error))  
 }
 
 function displayProjects(projects) {
@@ -141,7 +136,7 @@ function displayProjects(projects) {
       <p class="project-name">${project.name}</p>
       </div>
       <div class="color-and-delete-container">
-        <div class="saved-colors-display" id=${project.id}></div>
+        <div class="color-and-delete-container" id=${project.id}></div>
       </div>`
     projectDisplay.appendChild(newProject)
     })
@@ -164,7 +159,6 @@ function displayPalettes(palettes, projectId) {
  </div>`
    colorsDisplay.appendChild(newPalette)
   })
-
 }
 
 function addToDropDown(projects) {
@@ -194,8 +188,7 @@ function savePalette() {
   })
     .then(response => response.json())
     .then(palette => fetchAllProjects())
-    .catch(error => console.log(error))
-    
+    .catch(error => console.log(error))  
 }
 
 
