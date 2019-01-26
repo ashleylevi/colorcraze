@@ -65,6 +65,11 @@ body {
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
+  border-radius: 5px;
+}
+
+.color:hover {
+  filter: brightness(75%)
 }
 
 .fa-unlock-alt {
@@ -232,5 +237,9 @@ input[type=text] {
   color: #fff;
 }
 
+.colors-container {
+  display: flex;
+  margin-bottom: 50px;
+}
 
 
