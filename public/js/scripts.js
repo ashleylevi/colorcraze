@@ -30,7 +30,7 @@ lockBtns.forEach((button) => {
 })
 saveProjectBtn.addEventListener('click', saveProject)
 savePaletteBtn.addEventListener('click', savePalette)
-// deleteBtn.addEventListener('click', deletePalette)
+projectDisplay.addEventListener('click', deletePalette)
 
 function generateHex() {
   let color = '#';
@@ -176,7 +176,7 @@ function displayPalettes(palettes, projectId) {
    <div class="saved-color" style= "background:${palette.color_5}"></div>
    <div class="delete-display">
     <p class="palette-name">${palette.palette_name}</p>
-   <button class="delete-btn"><i class="fas fa-trash-alt"></i></button>
+   <button class="delete-btn"><i class="fas fa-trash-alt" id=${palette.id}></i></button>
  </div>`
    colorsDisplay.appendChild(newPalette)
   })
@@ -213,9 +213,18 @@ function savePalette() {
     paletteNameInput.value = ''
 }
 
-// deletePalette() {
-
-// }
+function deletePalette(e) {
+  let paletteId = e.target.id
+  fetch(`/api/v1/palettes/${paletteId}`, {
+      method: 'DELETE',
+      body: JSON.stringify({paletteId}),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => fetchAllProjects())
+}
 
 
 
