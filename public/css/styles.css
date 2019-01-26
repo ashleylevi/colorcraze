@@ -232,5 +232,9 @@ input[type=text] {
   color: #fff;
 }
 
+.colors-container {
+  display: flex;
+  margin-bottom: 50px;
+}
 
 
