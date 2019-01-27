@@ -249,7 +249,6 @@ function filterPalettes(palettes, id) {
   hexFour.innerText = found.color_4
   colorFive.setAttribute('style', `background-color: ${found.color_5}`)
   hexFive.innerText = found.color_5
-
 }
 
 

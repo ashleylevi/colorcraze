@@ -111,9 +111,7 @@ app.post('/api/v1/projects/:id/palettes', (request, response) => {
 
 //delete a palette from a project
 app.delete('/api/v1/palettes/:id', (request, response) => {
-
   const palette_id = parseInt(request.params.id)
-
   database('palettes').where('id', palette_id).delete()
     .then(palette => {
       response.status(201).json({ id: palette[0] })
@@ -121,18 +119,6 @@ app.delete('/api/v1/palettes/:id', (request, response) => {
     .catch(error => {
       response.status(500).json({ error })
     })
-
-
-  // database('palettes').select()
-  //   .then((palettes) => {
-  //     const filteredPalettes = palettes.filter((palette) => {
-  //       return palette.id !== palette_id
-  //     })
-  //     response.status(200).json(filteredPalettes)
-  //   })
-  //   .catch((error) => {
-  //     response.status(500).json({ error });
-  //   })
 })
 
 
