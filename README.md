@@ -1,7 +1,7 @@
 # **Colorcraze**
 
 ### About
-* Colorcraxze is a full stack application that allows users to generate a group of five colors generated via hex code. Individual colors can be locked in and randomization repeated until a desireable palette is found. Palettes can then be saved into individual projects, recalled later, and deleted.
+* Colorcraze is a full stack application that allows users to create a group of five colors generated via hex code. Individual colors can be locked in and randomization repeated until a desireable palette is found. Palettes can then be saved into individual projects, recalled later, and deleted.
 
 ### Tech Stack
 * All data for this application is stored in a custom backend database built using Express, PostgreSQL, and Knex utilizing REST API.
