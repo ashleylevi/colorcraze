@@ -5,7 +5,7 @@
 
 ### Tech Stack
 * All data for this application is stored in a custom backend database built using Express, PostgreSQL, and Knex utilizing REST API.
-* Front end was built in vanilla JavaScript.
+* Front-end was built in vanilla JavaScript.
 
 Colorcraze is deployed to Heroku and can be found at: https://colorcraze.herokuapp.com/
 
