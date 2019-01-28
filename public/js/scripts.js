@@ -148,14 +148,14 @@ function displayProjects(projects) {
       <p class="project-name">${project.name}</p>
       </div>
       <div class="color-and-delete-container">
-        <div class="color-and-delete-container" id=${project.id}></div>
+        <div class="color-and-delete-container" id="projectid${project.id}"></div>
       </div>`
     projectDisplay.appendChild(newProject)
     })
 }
 
 function displayPalettes(palettes, projectId) {
-  let colorsDisplay = document.getElementById(`${projectId}`)
+  let colorsDisplay = document.getElementById(`projectid${projectId}`)
   colorsDisplay.innerHTML = ''
   palettes.forEach((palette) => {
     var newPalette = document.createElement('div')
