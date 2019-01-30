@@ -1,3 +1,11 @@
 language: node_js
-node_js: 
-  - "node"
+node_js:
+- node
+notifications:
+  email: false
+deploy:
+  provider: heroku
+  api_key:
+    secure: fIA7iHDqJ3RhQEX0B1VA4Exsei/AGZmqjJJJXBTecw9TkMqfrn+sEUestHNz5XbQr6bTjLQz4pQX7lYQisEroSUw/kGJvthRlnjLLJefomobIqXUbUBxxucQRhOOipo6hwqc16hxcDdHeQ7QL6OdPoZoLNXe4Z1JA5kMNjSg4xXDEnQ+x7EMBH4nq7E96xcYGnPVdx2en3BNvIZFop0aZ6R9Sjwn/CuqEqRDvHvJJxTrgm/G6yJQ4f8GJeMoK/iuyJ2gVX9hKuCoBGuRnFPm1si45dHdFuElvG/vS5eq1Htv3pA7xM7JUwdriT56bRbklvaVUWmJ0ZF2k7hBieZfFB1GZuzKJ03V+r+83PIZoCKC2axdhVJ1M2WbCI+aw95lGhc/EAQcDF81ElcIXWHjNZHHh+JNavspE+1neymq8bJhuAaC2wIVf+1Q7PX15LFuy/jKyGZ9gq9bGCtBItGzPbAw6M2nOlACjCUwJABxoAM2QFHk8HZ3Yo50WF2tMN5nLRUYCvZGZH32jP45p/Fqeru0/C/Ao5VGqceCAJ6MCkcUuPI1n7fbDkl/F/9KYbNQXUFC/2271ukjhsZN/kvch8GvtPomlj+ocXUUZ6MBQzbbyaofdLV5mTL+hewbYflgE5iTKKqmfluxYuhP2MiTYjfEgfXDjJgK34RvfGqzaac=
+  app: colorcraze
+  skip_cleanup: true  
