@@ -12,16 +12,16 @@ Colorcraze is deployed to Heroku and can be found at: https://colorcraze.herokua
 ### Local Setup:
 To view this application, you first need to run the backend server by following these instructions (the front end will run after the backend starts off of a static public file):
 
-clone down the repository
-cd into directory
+* clone down the repository
+* cd into directory
 
-run `$ npm install`
+* run `$ npm install`
 
-run `npm install nodemon`
+* run `npm install nodemon`
 
-run `nodemon server.js`
+* run `nodemon server.js`
 
-Open http://localhost:3000 to view it in the browser.
+* Open http://localhost:3000 to view it in the browser.
 
 ### Screenshots 
 
